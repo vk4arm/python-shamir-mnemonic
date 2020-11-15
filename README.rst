@@ -1,10 +1,19 @@
 python-shamir-ru-mnemonic
 =========================
 
+
+
 Что это
 -------
 
-Этот проект - шуточная фаза развития проекта https://pypi.org/project/shamir-mnemonic/0.1.0/
+.. image:: http://neuzoid.com/crypto/images/shamir-works.png
+ :height: 300px
+
+
+Этот проект - -шуточная- расово-верная фаза развития проекта https://pypi.org/project/shamir-mnemonic/0.1.0/
+
+
+
 
 Зачем это
 ---------
