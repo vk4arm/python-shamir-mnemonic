@@ -1,6 +1,8 @@
 python-shamir-mnemonic
 ======================
 
+ddddd
+
 .. image:: https://badge.fury.io/py/shamir-mnemonic.svg
     :target: https://badge.fury.io/py/shamir-mnemonic
 
