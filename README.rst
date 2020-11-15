@@ -47,6 +47,7 @@ python-shamir-ru-mnemonic
 Поставить с Github:
 
 .. code-block:: console
+
     $ git clone https://github.com/vk4arm/python-shamir-ru-mnemonic.git
     $ cd python-shamir-ru-mnemonic    
     $ pip3 install .
@@ -58,6 +59,7 @@ python-shamir-ru-mnemonic
 Если ПО было установлено, как приведено выше
 
 .. code-block:: console
+
     $ pip3 uninstall shamir-ru-mnemonic
 
 
