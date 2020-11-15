@@ -5,8 +5,8 @@ import secrets
 
 import pytest
 
-import shamir_mnemonic as shamir
-from shamir_mnemonic import MnemonicError
+import shamir_ru_mnemonic as shamir
+from shamir_ru_mnemonic import MnemonicError
 
 MS = b"ABCDEFGHIJKLMNOP"
 

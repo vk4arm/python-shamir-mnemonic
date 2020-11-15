@@ -37,12 +37,12 @@ test:
 	pytest
 
 style_check:
-	isort --check-only --recursive shamir_mnemonic/ *.py
-	black shamir_mnemonic/ *.py --check
+	isort --check-only --recursive shamir_ru_mnemonic/ *.py
+	black shamir_ru_mnemonic/ *.py --check
 
 style:
-	black shamir_mnemonic/ *.py
-	isort -y --recursive shamir_mnemonic/ *.py
+	black shamir_ru_mnemonic/ *.py
+	isort -y --recursive shamir_ru_mnemonic/ *.py
 
 
 .PHONY: dist clean clean-build clean-pyc clean-test test style_check style

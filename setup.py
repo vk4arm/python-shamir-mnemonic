@@ -17,19 +17,19 @@ with open(os.path.join(HERE, "README.rst"), encoding="utf-8") as f:
 
 
 setup(
-    name="shamir-mnemonic",
-    version="0.2.0",
-    description="SLIP-39 Shamir Mnemonics",
+    name="shamir-ru-mnemonic",
+    version="0.1.0",
+    description="Funny localization for SLIP-39 Shamir Mnemonics",
     long_description=long_description,
-    url="https://github.com/trezor/python-shamir-mnemonic",
-    author="Satoshi Labs",
-    packages=["shamir_mnemonic"],
+    url="https://github.com/vk4arm/python-ru-shamir-mnemonic",
+    author="Eastern Angels feat Satoshi Labs",
+    packages=["shamir_ru_mnemonic"],
     python_requires=">=3.6",
     install_requires=REQUIREMENTS,
-    package_data={"shamir_mnemonic": ["wordlist.txt"]},
-    entry_points={"console_scripts": ["shamir=shamir_mnemonic.cli:cli"]},
+    package_data={"shamir_ru_mnemonic": ["wordlist.txt"]},
+    entry_points={"console_scripts": ["rushamir=shamir_ru_mnemonic.cli:cli"]},
     classifiers=[
-        "License :: OSI Approved :: MIT License",
+        "License :: Sorry, i removed it from here. It is just a project-for-fun )",
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS :: MacOS X",

@@ -4,8 +4,8 @@ import random
 
 import attr
 
-from shamir_mnemonic import constants, rs1024, shamir, wordlist
-from shamir_mnemonic.share import Share
+from shamir_ru_mnemonic import constants, rs1024, shamir, wordlist
+from shamir_ru_mnemonic.share import Share
 
 
 def random_bytes(n):

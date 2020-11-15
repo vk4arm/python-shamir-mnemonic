@@ -1,99 +1,152 @@
-python-shamir-mnemonic
-======================
+python-shamir-ru-mnemonic
+=========================
 
-ddddd
+Что это
+-------
 
-.. image:: https://badge.fury.io/py/shamir-mnemonic.svg
-    :target: https://badge.fury.io/py/shamir-mnemonic
+Этот проект - шуточная фаза развития проекта https://pypi.org/project/shamir-mnemonic/0.1.0/
 
-Reference implementation of SLIP-0039: Shamir's Secret-Sharing for Mnemonic
-Codes
-
-Abstract
---------
-
-This SLIP describes a standard and interoperable implementation of Shamir's
-secret sharing (SSS). SSS splits a secret into unique parts which can be
-distributed among participants, and requires a specified minimum number of
-parts to be supplied in order to reconstruct the original secret. Knowledge of
-fewer than the required number of parts does not leak information about the
-secret.
-
-Specification
--------------
-
-See https://github.com/satoshilabs/slips/blob/master/slip-0039.md for full
-specification.
-
-Security
---------
-
-This implementation is not using any hardening techniques. Secrets are passed in the
-open, and calculations are most likely trivially vulnerable to side-channel attacks.
-
-The purpose of this code is to verify correctness of other implementations. **It should
-not be used for handling sensitive secrets**.
-
-Installation
-------------
-
-With pip from GitHub:
-
-.. code-block:: console
-
-    $ pip3 install shamir-mnemonic
-
-From local checkout for development:
-
-.. code-block:: console
-
-    $ python3 setup.py develop
-
-CLI usage
+Зачем это
 ---------
 
-CLI tool is included as a reference and UX testbed.
+У вас есть симметричный ключ для шифрования, например, номеров банковских карт (pan) или канала
+с примерением симметричной схемы шифрования. Существуют достаточно хорошо зарекомендовавшие себя
+алгоритмы, типа AES128, AES256 итд. 
+Однако, есть проблема: ключ надо как-то передать "на ту" сторону, с риском компрометации ключа.
+Схема Шамира позволяет разделить ключ на N частей полной длины таким образом, чтобы при вводе T частей,
+можно было восстановить исходный ключ.
 
-**Warning:** this tool makes no attempt to protect sensitive data! Use at your own risk.
-If you need this to recover your wallet seeds, make sure to do it on an air-gapped
-computer, preferably running a live system such as Tails.
+Таким образом, достигается безопасность хранения секретного ключа (в ряде случаев возможна имплементация, при которой
+мастер-ключ не храниться нигде).
 
-When the :code:`shamir_mnemonic` package is installed, you can use the :code:`shamir`
-command:
+Вторая проблема: владельцы ключа должны запомнить длинную случайную последовательность (например, 16 байт).
+К сожалению, возможно, что владельцы будут записывать свой "секрет" на бумажке. Чтобы помочь владельцам ключей запомнить их,
+коллеги из Сатоши Лабс предложили методику мнемонического метода Шамира Он заключается в кодировании последовательности
+набором слов из определенного словаря. https://github.com/satoshilabs/slips/blob/master/slip-0039.md
+
+В нашей имплементации, с небольшими изменениями, предложено использовать эффективный и хорошо запоминающийся словарь из 
+набора популярных терминов и слов из современной жизни страны.
+
+Нужно учесть тот факт, что набор слов может быть достаточно вычурным, и не является попыткой кого-то оскорбить.
+
+
+Безопасность
+------------
+
+Данная имплементация позволяет сразу получить и мастер-ключ, и "мнемотизированные" секреты,
+а значит, для имплементации в защищаемых решениях, должно быть модицифировано.
+
+Цель данного кода - проверить корректность других имплементаций и просто приколоться.
+
+**Для защиты чувствительной информации вам потребуется имплементация, не палящая master-ключ!!!**
+
+
+Инсталляция
+------------
+
+Поставить с Github:
+
+.. code-block:: console
+    $ git clone https://github.com/vk4arm/python-shamir-ru-mnemonic.git
+    $ cd python-shamir-ru-mnemonic    
+    $ pip3 install .
+
+
+Удаление
+--------
+
+Если ПО было установлено, как приведено выше
+
+.. code-block:: console
+    $ pip3 uninstall shamir-ru-mnemonic
+
+
+Работа из командной строки
+---------
+
+
+Вы можете использовать механизм получения разделенного мнемонического секрета из командной строки.
+
+**Внимание:** мы не рекомендуем использовать скрипт коммандной строки для защиты чувствительных данных!
+Злоумышленние или системынй администратор может посмотреть созданный секретный ключ, что хорошо для отладки,
+и если вы доверяете своему системуному администратору (или живете в Санкт-Петербурге)
+
+
+После того, как  :code:`shamir_ru_mnemonic` установлен - вы можете использовать  :code:`shamir`
+комманду следующим образом:
 
 .. code-block:: console
 
-    $ shamir create 3of5   # create a 3-of-5 set of shares
-    $ shamir recover       # interactively recombine shares to get the master secret
+    $ rushamir create 3of5   # создает 5 секретов, из которых 3 любых достаточно для восстановления ключа
+    $ rushamir recover       # интерактивный механизм восстановления ключа (владельцы должны будут ввести свои секреты)
 
-You can supply your own master secret as a hexadecimal string:
+Вы можете ввести собственный ключ в виде 16-ричной строки:
 
 .. code-block:: console
 
-    $ shamir create 3of5 --master-secret=cb21904441dfd01a392701ecdc25d61c
+    $ rushamir create 3of5 --master-secret=cb21904441dfd01a392701ecdc25d61c
 
-You can specify a custom scheme. For example, to create three groups, with 2-of-3,
-2-of-5, and 4-of-5, and require completion of all three groups, use:
+Вы можете специфицировать собственню схему. Например, для создания 3 групп с 2-из-3,
+2-из-5, и 4-из-5, используйте:
 
 .. code-block:: console
 
     $ shamir create custom --threshold 3 --group 2 3 --group 2 5 --group 4 5
 
-Use :code:`shamir --help` or :code:`shamir create --help` to see all available options.
+Используйте :code:`rushamir --help` or :code:`rushamir create --help` to see all available options.
 
-If you want to run the CLI from a local checkout without installing, use the following
-command:
+Если вам нужно запустить консольную версию без установки сразу после чекаута, используйте:
 
 .. code-block:: console
 
-    $ python3 -m shamir_mnemonic.cli
+    $ python3 -m shamir_ru_mnemonic.cli
 
-Test vectors
-------------
 
-The test vectors in vectors.json are given as a list of triples. The first member of the
-triple is a description of the test vector, the second member is a list of mnemonics and
-the third member is the master secret which results from combining the mnemonics. The
-master secret is encoded as a string containing two hexadecimal digits for each byte. If
-the string is empty, then attempting to combine the given set of mnemonics should result
-in error. The passphrase "TREZOR" is used for all valid sets of mnemonics.
+Тестовые вектора
+-----------------
+
+Стопудово будут в pro-версии ))))
+Сейчас скрипт generate_vectors дает ошибку, но вместо этого вы можете проверить вручную работу cli
+Делается это так:
+
+
+
+Отказ от ответственности
+------------------------
+
+1. Данное ПО - поставляется как есть и не является сертифицированным средством защиты информации (хотя на его основе можно сделать)
+2. Словарь - просто словарь. Каждое слово в отдельности - это просто слово, слов запрещенных пока нет, но мы готовы признать
+каждое отдельное слово преступлением и убрать его по первому обоснованному требованию.
+3. Наборы слов являются случайными. Они ничего не означают, но помогают запомнить часть секрета. 
+4. Это просто забавно. Заранее простите. 
+
+
+Охренительное спасибо участникам!
+---------------------------------
+
+**lovetofire** - за самый значительный вклад, душу проекта и 
+нейтрализацию религиозных фанатиков-кибердиверсантов.
+
+.. image:: http://neuzoid.com/crypto/images/photo_2020-11-15_22-34-29.jpg
+ :height: 300px
+
+
+**Святой Бонифаций** - за старт и разгон, большой вклад и ауру
+
+.. image:: http://neuzoid.com/crypto/images/photo_2020-11-15_22-20-42.jpg
+ :height: 300px
+
+
+**demeliorator** - за организацию, оптимизм и знания
+
+.. image:: http://neuzoid.com/crypto/images/photo_2020-11-15_22-22-01.jpg
+ :height: 300px
+
+
+**Отец Педигий Рептилоида** - за воровство чужих идей и удаление из словаря термина "1с".
+Так же добавил в конец мнемонического отображения контрольной суммы для 128-битного кода слово "аминь"
+
+.. image:: http://neuzoid.com/crypto/images/photo_2020-11-15_22-20-06.jpg
+ :height: 300px
+
+
