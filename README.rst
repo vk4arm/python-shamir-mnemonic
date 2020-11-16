@@ -102,7 +102,7 @@ python-shamir-ru-mnemonic
 
 .. code-block:: console
 
-    $ shamir create custom --threshold 3 --group 2 3 --group 2 5 --group 4 5
+    $ rushamir create custom --threshold 3 --group 2 3 --group 2 5 --group 4 5
 
 Используйте :code:`rushamir --help` or :code:`rushamir create --help` to see all available options.
 
